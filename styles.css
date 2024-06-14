@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  flex: 1;
+}
+
+.video-container {
+  position: relative;
+}
+
+#video {
+  filter: grayscale(100);
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+h1 {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 5vh;
+
+  color: blue;
+
+  position: absolute;
+  z-index: 999;
+
+  text-align: center;
+}
+
+a {
+  position: absolute;
+  z-index: 999;
+
+  top: 70%;
+  left: 60%;
+}
+
+button {
+  background-color: white; 
+  color: #000dff; 
+  border: 2px solid #000dff;
+
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+
+  position: absolute;
+  z-index: 999;
+}
+
+.button1 {
+  top: 50%;
+  left: 40%;
+}
+
+.button1:hover {
+  background-color: #000dff;
+  color: white;
+}
+
+.button2 {
+  top: 30%;
+  left: 70%;
+}
+
+.button2:hover {
+  background-color: #000dff;
+  color: white;
+}
+
+.active {
+  background-color: #000dff;
+  color: white;
+}
