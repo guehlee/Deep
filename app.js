@@ -2,8 +2,10 @@ const video = document.getElementById("video");
 const videoContainer = document.getElementById("video-container");
 const button1 = document.querySelector(".button1");
 const button2 = document.querySelector(".button2");
+const button3 = document.querySelector(".button3");
 
-const MODEL_URI = "/models";
+const MODEL_URI = "models";
+let mouthOpen = false;
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URI),
@@ -46,8 +48,6 @@ video.addEventListener("play", () => {
   const canvasSize = { width: video.width, height: video.height };
   faceapi.matchDimensions(canvas, canvasSize);
 
-  let lastMouthOpen = false;
-
   setInterval(async () => {
     const detections = await faceapi
       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
@@ -63,18 +63,14 @@ video.addEventListener("play", () => {
 
       const mouthCenter = {
         x: (mouth[0].x + mouth[6].x) / 2,
-        y: (mouth[3].y + mouth[10].y) / 2
+        y: (mouth[3].y + mouth[10].y) / 2,
       };
 
-      const mouthOpen = mouth[13].y - mouth[19].y > 15;
+      mouthOpen = !(mouth[13].y - mouth[19].y > -15);
+      console.log(mouth[13].y - mouth[19].y);
+      console.log(mouthOpen);
 
       moveCursor(mouthCenter.x, mouthCenter.y);
-
-      if (mouthOpen && !lastMouthOpen) {
-        simulateClick(mouthCenter.x, mouthCenter.y);
-      }
-
-      lastMouthOpen = mouthOpen;
     }
   }, 100);
 });
@@ -112,37 +108,35 @@ function moveCursor(x, y) {
     const mouseMoveEvent = new MouseEvent("mousemove", {
       clientX: scaledX,
       clientY: scaledY,
-      bubbles: true
+      bubbles: true,
     });
     targetElement.dispatchEvent(mouseMoveEvent);
 
     // Add active class if the target element is a button or link
-    if (targetElement.classList.contains('button1') || targetElement.classList.contains('button2') || targetElement.tagName.toLowerCase() === 'a') {
-      targetElement.classList.add('active');
+    if (
+      targetElement.classList.contains("button1") ||
+      targetElement.classList.contains("button2") ||
+      targetElement.classList.contains("button3") ||
+      targetElement.tagName.toLowerCase() === "a"
+    ) {
+      targetElement.classList.add("active");
+      if (mouthOpen) {
+        //put eating actions here
+        console.log(targetElement.tagName);
+        if (targetElement.tagName == "A") {
+          let url = targetElement.getAttribute("href");
+          window.location.href = url;
+        } else {
+          targetElement.classList.add("clicked");
+        }
+      }
     }
 
     // Remove active class from buttons or links that are not under the cursor
-    [button1, button2].forEach(button => {
+    [button1, button2, button3].forEach((button) => {
       if (button !== targetElement) {
-        button.classList.remove('active');
+        button.classList.remove("active");
       }
     });
   }
-}
-
-function simulateClick(x, y) {
-  const scaledX = (x / video.width) * window.innerWidth;
-  const scaledY = (y / video.height) * window.innerHeight;
-
-  [button1, button2].forEach(button => {
-    const rect = button.getBoundingClientRect();
-    if (scaledX >= rect.left && scaledX <= rect.right && scaledY >= rect.top && scaledY <= rect.bottom) {
-      const clickEvent = new MouseEvent("click", {
-        clientX: scaledX,
-        clientY: scaledY,
-        bubbles: true
-      });
-      button.dispatchEvent(clickEvent);
-    }
-  });
 }
