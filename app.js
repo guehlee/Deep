@@ -117,6 +117,9 @@ function moveCursor(x, y) {
       targetElement.classList.contains("button1") ||
       targetElement.classList.contains("button2") ||
       targetElement.classList.contains("button3") ||
+      targetElement.classList.contains("button4") ||
+      targetElement.classList.contains("button5") ||
+      targetElement.classList.contains("button6") ||
       targetElement.tagName.toLowerCase() === "a"
     ) {
       targetElement.classList.add("active");
@@ -133,7 +136,7 @@ function moveCursor(x, y) {
     }
 
     // Remove active class from buttons or links that are not under the cursor
-    [button1, button2, button3].forEach((button) => {
+    [button1, button2, button3, button4, button5, button6].forEach((button) => {
       if (button !== targetElement) {
         button.classList.remove("active");
       }
