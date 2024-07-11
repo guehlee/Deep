@@ -87,6 +87,22 @@ button:hover {
   left: 80%;
 }
 
+.button4 {
+  top: 20%;
+  left: 30%;
+}
+
+.button5 {
+  top: 80%;
+  left: 20%;
+}
+
+.button6 {
+  top: 40%;
+  left: 20%;
+}
+
+
 .active {
   background-color: #000dff;
   color: white;
